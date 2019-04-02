@@ -28,7 +28,7 @@ public class IHMQuestion2_1Test extends junit.framework.TestCase
     /**
      * Met en place les engagements.
      *
-     * MÃ©thode appelÃ©e avant chaque appel de mÃ©thode de test.
+     * Méthode appelée avant chaque appel de méthode de test.
      */
     protected void setUp() throws java.lang.Exception{
         f = new IHMQuestion2_1();
@@ -38,7 +38,7 @@ public class IHMQuestion2_1Test extends junit.framework.TestCase
         f.setAlwaysOnTop(true);
         f.setLocation(random.nextInt(500), random.nextInt(500));
         robot = new Robot();
-        robot.delay(100);
+        robot.delay(200);
     }
 
     protected void tearDown(){ // throws java.lang.Exception
@@ -115,11 +115,11 @@ public class IHMQuestion2_1Test extends junit.framework.TestCase
     public void mouseMoveAndClick(int x, int y){
         robot.mouseMove( x,y);
 
-        robot.delay(60);
+        robot.delay(100);
         robot.mousePress(InputEvent.BUTTON1_MASK);
-        robot.delay(60);
+        robot.delay(200);
         robot.mouseRelease(InputEvent.BUTTON1_MASK);
-        robot.delay(60);
+        robot.delay(100);
     }//end mouseMoveAndClick
 
 }

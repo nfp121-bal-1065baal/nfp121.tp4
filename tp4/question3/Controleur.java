@@ -9,10 +9,10 @@ import javax.swing.*;
 import java.awt.event.*;
 
 /**
- * D√©crivez votre classe Controleur ici.
+ * DÈcrivez votre classe Controleur ici.
  * 
  * @author (votre nom)
- * @version (un num√©ro de version ou une date)
+ * @version (un numÈro de version ou une date)
  */
 public class Controleur extends JPanel {
 
@@ -34,31 +34,173 @@ public class Controleur extends JPanel {
 
         setLayout(new GridLayout(2, 1));
         add(donnee);
-        donnee.addActionListener(null /* null est √† remplacer */);
+        //donnee.addActionListener(null /* null est ‡ remplacer */);
         JPanel boutons = new JPanel();
         boutons.setLayout(new FlowLayout());
-        boutons.add(push);  push.addActionListener(null /* null est √† remplacer */);
-        boutons.add(add);   add.addActionListener(null /* null est √† remplacer */);
-        boutons.add(sub);   sub.addActionListener(null /* null est √† remplacer */);
-        boutons.add(mul);   mul.addActionListener(null /* null est √† remplacer */);
-        boutons.add(div);   div.addActionListener(null /* null est √† remplacer */);
-        boutons.add(clear); clear.addActionListener(null /* null est √† remplacer */);
+        newActionListener AL = new newActionListener();
+        boutons.add(push);  push.addActionListener(AL);
+        boutons.add(add);   add.addActionListener(AL);
+        boutons.add(sub);   sub.addActionListener(AL);
+        boutons.add(mul);   mul.addActionListener(AL);
+        boutons.add(div);   div.addActionListener(AL);
+        boutons.add(clear); clear.addActionListener(AL);
         add(boutons);
         boutons.setBackground(Color.red);
         actualiserInterface();
     }
 
     public void actualiserInterface() {
-        // √† compl√©ter
+        
+        if(pile.taille() <= 1  )
+        {
+            
+            add.setEnabled(false);
+            
+            mul.setEnabled(false);
+            
+            sub.setEnabled(false);
+            
+            div.setEnabled(false);
+                                     } 
+        
+        else 
+        
+        {
+            add.setEnabled(true);
+            
+            mul.setEnabled(true);
+            
+            sub.setEnabled(true);
+            
+            div.setEnabled(true);
+                                     }
+        
+        if(pile.estPleine()) 
+        
+        {
+            push.setEnabled(false);
+                                     }
+       
+        else 
+        
+        {
+            push.setEnabled(true);
+                                     }
     }
 
     private Integer operande() throws NumberFormatException {
         return Integer.parseInt(donnee.getText());
     }
 
-    // √† compl√©ter
-    // en cas d'exception comme division par z√©ro, 
-    // mauvais format de nombre suite √† l'appel de la m√©thode operande
-    // la pile reste en l'√©tat (intacte)
+    // ‡ complÈter
+    // en cas d'exception comme division par zÈro, 
+    // mauvais format de nombre suite ‡ l'appel de la mÈthode operande
+    // la pile reste en l'Ètat (intacte)
+    class newActionListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+      {
+        String aC = e.getActionCommand();
+        
+        if(aC.equals("[]"))
+        {
+            while(!pile.estVide())
+            {
+                try
+                {
+                    pile.depiler();
+                }
+                catch(PileVideException pve)
+                {pve.printStackTrace();
+                }
+            }
+        } 
+        
+        else 
+        
+        if(aC.equals("push"))
+        
+        {
+            try
+            {
+                pile.empiler(operande());
+            } catch(NumberFormatException nfe)
+            {
+            }
+            catch(PilePleineException ppe) 
+            {
+                ppe.printStackTrace();
+            }
+        } 
+        
+        else 
+        
+        if (aC.equals("+") || aC.equals("*") || aC.equals("-") || aC.equals ("/") )
+        
+        {
+            boolean badOp = false;
+            
+            int sp1,sp2,equal;
+            
+            sp1=0;
+            
+            sp2=0;
+            
+            equal=0;
+            
+            try{
+                sp1 = pile.depiler();
+                sp2 = pile.depiler();
+            }
+            catch(PileVideException pve)
+            {
+                pve.printStackTrace();
+            }
+                
+            if(aC.equals("+")) 
+            equal = sp2 + sp1;
+            
+            else 
+            
+            if(aC.equals("*"))
+            
+            equal = sp2 * sp1;
+            
+            else 
+            
+            if(aC.equals("-")) 
+            
+            equal = sp2 - sp1;
+            
+            else 
+            
+            if(aC.equals("/")) 
+            {
+                
+                if(sp1 == 0) badOp = true;
+                
+                else equal = sp2 / sp1;
+                
+            }
+            
+            try
+            {
+                
+                if(badOp)
+                {
+                    pile.empiler(sp2);
+                    
+                    pile.empiler(sp1);
+                }
+                else 
+                pile.empiler(equal);
+            }
+            catch (PilePleineException ppe)
+            {
+                ppe.printStackTrace();}
+        }
+              actualiserInterface();
+        }
+    }
 
 }
